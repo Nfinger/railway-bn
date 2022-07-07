@@ -3,19 +3,14 @@ import * as React from "react";
 import "./App.css";
 
 function App() {
+  const currentTime = new Date();
+  const fullTime = currentTime - window.performance.timing.requestStart;
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h3>Welcome to React!</h3>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h3>We rendered this React app in </h3>
+        <div>{fullTime.toString()}ms</div>
       </header>
     </div>
   );
