@@ -9,15 +9,24 @@ RUN unzip -d /bun -q -o "/bun/bun.zip"
 RUN mv /bun/bun-linux-x64/bun /usr/local/bin/bun
 RUN chmod 777 /usr/local/bin/bun
 
-WORKDIR /usr/src/app
-RUN addgroup --gid 101 --system appuser && adduser --uid 101 --system appuser
-RUN chown -R 101:101 /usr/src/app && chmod -R g+w /usr/src/app
-USER appuser
+# Install all node_modules, including dev dependencies
+FROM base as deps
 
-COPY package*.json ./
+WORKDIR /myapp
 
+ADD package.json bun.lockb ./
 RUN bun install
 
-COPY . .
+FROM base
+
+WORKDIR /myapp
+
+COPY --from=deps /myapp/node_modules /myapp/node_modules
+
+RUN addgroup --gid 101 --system appuser && adduser --uid 101 --system appuser
+RUN chown -R 101:101 /myapp && chmod -R g+w /myapp
+USER appuser
+
+ADD . .
 
 CMD bun run react-ssr.jsx
