@@ -10,22 +10,15 @@ RUN mv /bun/bun-linux-x64/bun /usr/local/bin/bun
 RUN chmod 777 /usr/local/bin/bun
 
 # Install all node_modules, including dev dependencies
-FROM base as deps
 
 WORKDIR /myapp
-
-ADD package.json bun.lockb ./
-RUN bun install
-
-FROM base
-
-WORKDIR /myapp
-
-COPY --from=deps /myapp/node_modules /myapp/node_modules
 
 RUN addgroup --gid 101 --system appuser && adduser --uid 101 --system appuser
 RUN chown -R 101:101 /myapp && chmod -R g+w /myapp
 USER appuser
+
+ADD package.json bun.lockb ./
+RUN bun install
 
 ADD . .
 
