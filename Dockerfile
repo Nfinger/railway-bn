@@ -1,3 +1,4 @@
+FROM node:16
 FROM ubuntu:22.04
 
 WORKDIR /bun
@@ -16,8 +17,6 @@ WORKDIR /myapp
 RUN addgroup --gid 101 --system appuser && adduser --uid 101 --system appuser
 RUN chown -R 101:101 /myapp && chmod -R g+w /myapp
 USER appuser
-
-FROM node:16
 
 
 ADD ./package.json ./
