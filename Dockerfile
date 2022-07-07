@@ -17,9 +17,9 @@ RUN addgroup --gid 101 --system appuser && adduser --uid 101 --system appuser
 RUN chown -R 101:101 /myapp && chmod -R g+w /myapp
 USER appuser
 
-ADD package.json bun.lockb ./
+ADD ./package.json bun.lockb ./
 RUN bun install
 
-ADD . .
+ADD ./ .
 
 CMD bun run react-ssr.jsx
