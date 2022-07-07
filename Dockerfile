@@ -15,4 +15,6 @@ RUN chown -R 101:101 /app && chmod -R g+w /app
 USER appuser
 COPY . ./
 
+RUN bun install
+
 CMD bun run react-ssr.jsx
